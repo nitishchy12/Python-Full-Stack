@@ -1,6 +1,23 @@
-
 from collections import deque, defaultdict
 import re
+from functools import wraps
+
+# decorator 
+def parse_log(add_log):
+    def wrapper(logs):
+        match = re.match(r"\[(.*?)\] (\w+) (\w+): (.*)", line)
+        if not match:
+            return  
+        timestamp, level, user, message = match.groups()
+        log_dict = {
+            "timestamp": timestamp,
+            "level": level,
+            "user": user,
+            "message": message
+        }
+        return add_log(self, log_dict)
+    return wrapper
+
 class LogSystem:
     def __init__(self, capacity: int):
         self.capacity = capacity
